@@ -142,7 +142,7 @@ $ $ singularity exec chainer.img bash -c '. ./env_singularity.sh; /usr/local/pyt
 
 ポイント：
  * ReedbushはRedhat系ディストリビュージョンなので、Dockerイメージのベースとして CentOS のものを利用します
- * ホスト環境との混在を避けるため、Pythonを独自にビルドしています
+ * ホスト環境との混在を避けるため、Pythonを独自にビルドしています（もしかしたら不要かも）
  * `mpiexec` から `bash` を起動し、そこで `env_singularity.sh` を読み込んで、不足している `LD_LIBRARY_PATH` を設定しています
 
 
