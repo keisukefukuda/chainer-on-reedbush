@@ -125,6 +125,26 @@ epoch       main/loss   validation/main/loss  main/accuracy  validation/main/acc
 
 
 
+# Singularityの利用
 
+ログインノード上でイメージをビルドする
+
+```
+$ . env.sh
+$ cd $HOME
+$ singularity build chainer.img docker://keisukef/chainer-reedbush:cuda91-chainer5.1.0
+```
+
+GPUを利用するため、インタラクティブジョブを投げてみます
+
+```
+$ qsub -I -q h-interactive -l select=1:mpiprocs=2 -W group_list=$(id -ng) -l walltime=0:30:00
+qsub: waiting for job 1425591.reedbush-pbsadmin0 to start
+qsub: job 1425591.reedbush-pbsadmin0 ready
+
+[z30425@a090 ~]$ cd /lustre/$(id -ng)/$USER/
+[z30425@a090 ~]$ . env.sh
+[z30425@a090 ~]$ singularity exec --nv chainer.img /lustre/app/openmpi/2.1.2/ofed4.2/gnu/bin/mpiexec -n 2 bash -c ". env_singularity.sh; /usr/local/python3.6/bin/python3 train_mnist.py -g"
+```
 
 
