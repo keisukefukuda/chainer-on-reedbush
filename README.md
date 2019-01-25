@@ -130,7 +130,7 @@ epoch       main/loss   validation/main/loss  main/accuracy  validation/main/acc
 ログインノード上でイメージをビルドする
 
 ```
-$ . env.sh
+$ . /lustre/$(id -ng)/$(id -nu)/env.sh
 $ cd $HOME
 $ singularity build chainer.img docker://keisukef/chainer-reedbush:cuda91-chainer5.1.0
 ```
