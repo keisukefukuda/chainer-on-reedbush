@@ -143,6 +143,7 @@ $ $ singularity exec chainer.img bash -c '. ./env_singularity.sh; /usr/local/pyt
 ポイント：
  * ReedbushはRedhat系ディストリビュージョンなので、Dockerイメージのベースとして CentOS のものを利用します
  * ホスト環境との混在を避けるため、Pythonを独自にビルドしています
+ * `mpiexec` から `bash` を起動し、そこで `env_singularity.sh` を読み込んで、不足している `LD_LIBRARY_PATH` を設定しています
 
 
 GPUを利用するため、インタラクティブジョブを投げてみます
@@ -161,7 +162,7 @@ qsub: job 1425591.reedbush-pbsadmin0 ready
 ポイント：
  * `env.sh`の中で、 `SINGULARITY_BINDPATH`を設定して、必要なシステムライブラリを読めるようにしています
  * `mpiexec` をフルパスで指定しています。
- * `mpiexec` から `bash` を起動し、そこで `env_singularity.sh` を読み込んで、不足している `LD_LIBRARY_PATH` を設定しています
+ * （同上）`mpiexec` から `bash` を起動し、そこで `env_singularity.sh` を読み込んで、不足している `LD_LIBRARY_PATH` を設定しています
 
 
 
