@@ -135,6 +135,16 @@ $ cd $HOME
 $ singularity build chainer.img docker://keisukef/chainer-reedbush:cuda91-chainer5.1.0
 ```
 
+次に、 `mpi4py` をインストールします
+```
+$ $ singularity exec chainer.img bash -c '. ./env_singularity.sh; /usr/local/python3.6/bin/pip3 install --user mpi4py'
+```
+
+ポイント：
+ * ReedbushはRedhat系ディストリビュージョンなので、Dockerイメージのベースとして CentOS のものを利用します
+ * ホスト環境との混在を避けるため、Pythonを独自にビルドしています
+
+
 GPUを利用するため、インタラクティブジョブを投げてみます
 
 ```
@@ -144,7 +154,14 @@ qsub: job 1425591.reedbush-pbsadmin0 ready
 
 [z30425@a090 ~]$ cd /lustre/$(id -ng)/$USER/
 [z30425@a090 ~]$ . env.sh
-[z30425@a090 ~]$ singularity exec --nv chainer.img /lustre/app/openmpi/2.1.2/ofed4.2/gnu/bin/mpiexec -n 2 bash -c ". env_singularity.sh; /usr/local/python3.6/bin/python3 train_mnist.py -g"
+[z30425@a090 ~]$ singularity exec --nv chainer.img \
+                       /lustre/app/openmpi/2.1.2/ofed4.2/gnu/bin/mpiexec -n 2 \
+                       bash -c ". env_singularity.sh; /usr/local/python3.6/bin/python3 train_mnist.py -g"
 ```
+ポイント：
+ * `env.sh`の中で、 `SINGULARITY_BINDPATH`を設定して、必要なシステムライブラリを読めるようにしています
+ * `mpiexec` をフルパスで指定しています。
+ * `mpiexec` から `bash` を起動し、そこで `env_singularity.sh` を読み込んで、不足している `LD_LIBRARY_PATH` を設定しています
+
 
 
